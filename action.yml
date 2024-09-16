@@ -1,0 +1,14 @@
+name: CMI Validates
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  pre_merge_validates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR Titel beinhaltet eine Ticketreferenz oder [NO-TICKET]
+        run: |
+          [[ "${{ github.event.pull_request.title }}" =~ [A-Z]{2,5}[0-9]{0,5}\-[0-9]{1,5} ]] && exit 0
+          [[ "${{ github.event.pull_request.title }}" =~ \[NO\-TICKET\] ]] && exit 0
+          exit 1
